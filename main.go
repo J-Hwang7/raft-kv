@@ -4,7 +4,7 @@ import (
 	"flag"
 	"strings"
 
-	"https://github.com/J-Hwang7/raft-kv.git"
+	"https://github.com/J-Hwang7/raft-kv"
 )
 
 func main() {

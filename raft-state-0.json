@@ -1,0 +1,1 @@
+{"CurrentTerm":26,"VotedFor":0,"Log":[{"Term":0,"Command":{"Op":"","Key":"","Value":""}},{"Term":10,"Command":{"Op":"PUT","Key":"x","Value":"5"}},{"Term":10,"Command":{"Op":"PUT","Key":"city","Value":"atlanta"}}]}
