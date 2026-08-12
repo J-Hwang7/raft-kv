@@ -7,3 +7,5 @@ go.work.sum
 .idea/
 .vscode/
 .DS_Store
+raft-state-*.json
+raft-state-*.json.tmp
