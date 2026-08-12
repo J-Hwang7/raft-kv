@@ -1,9 +1,0 @@
-*.exe
-*.exe~
-*.test
-*.out
-go.work
-go.work.sum
-.idea/
-.vscode/
-.DS_Store
