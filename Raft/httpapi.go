@@ -6,11 +6,6 @@ import (
 	"net/http"
 )
 
-// StartHTTP exposes the KV store over HTTP on the given address.
-//   PUT:    curl "http://localhost:9000/put?key=x&value=5"
-//   GET:    curl "http://localhost:9000/get?key=x"
-//   DELETE: curl "http://localhost:9000/delete?key=x"
-//   STATUS: curl "http://localhost:9000/status"
 func (rn *RaftNode) StartHTTP(addr string) {
 	mux := http.NewServeMux()
 

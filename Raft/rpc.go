@@ -31,27 +31,28 @@ type AppendEntriesReply struct {
 }
 
 // RequestVote is what a campaigning peer calls ON this node.
-// YOU write the vote-granting logic here next step. For now it refuses
-// everything, so the cluster compiles and boots.
+// Refuses everything, so the cluster compiles and boots.
 func (rn *RaftNode) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) error {
 	rn.mu.Lock()
 	defer rn.mu.Unlock()
 
 	rn.logf("got RequestVote from node %d (their term %d)", args.CandidateID, args.Term)
 
-
+	// If an candidate has an older term than the one being asked to vote in
 	if args.Term < rn.currentTerm {
 		reply.Term = rn.currentTerm
 		reply.VoteGranted = false
 		return nil
 	}
-
+ 
+	// If candidate has a newer term than one being asked to vote in
 	if args.Term > rn.currentTerm {
 		rn.currentTerm = args.Term
 		rn.votedFor = -1
 		rn.state = Follower
 	}
 
+	// Decide wheter to grant vote
 	if rn.votedFor == -1 || rn.votedFor == args.CandidateID {
 		rn.votedFor = args.CandidateID
 		rn.lastHeard = time.Now() 
@@ -66,8 +67,7 @@ func (rn *RaftNode) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) 
 }
 
 // sendRequestVote dials a peer and asks for its vote. (nil, false) means
-// the peer was unreachable — in Raft that's normal (it might be dead) and
-// just counts as "no vote."
+// the peer was unreachable and counts as "no vote."
 func (rn *RaftNode) sendRequestVote(peerID int, args *RequestVoteArgs) (*RequestVoteReply, bool) {
 	client, err := rpc.Dial("tcp", rn.peers[peerID])
 	if err != nil {
@@ -134,25 +134,25 @@ func (rn *RaftNode) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesR
 
 	persistNeeded := false // set true whenever currentTerm or log changes
 
-	// A. Stale leader — reject. (no durable change, so no persist)
+	// If there is a stale leader, rejects it
 	if args.Term < rn.currentTerm {
 		reply.Term = rn.currentTerm
 		reply.Success = false
 		return nil
 	}
 
-	// B. Leader is ahead — adopt their term.
+	// Adjusts the current term to the correct term
 	if args.Term > rn.currentTerm {
 		rn.currentTerm = args.Term
 		rn.votedFor = -1
 		persistNeeded = true // term changed
 	}
 
-	// C. Valid leader — become follower, reset clock.
+	// Checks if leader is valid, if valid sets state to follower
 	rn.state = Follower
 	rn.lastHeard = time.Now()
 
-	// 1 — CONSISTENCY CHECK.
+	// CONSISTENCY CHECK
 	if rn.lastLogIndex() < args.PrevLogIndex || rn.log[args.PrevLogIndex].Term != args.PrevLogTerm {
 		if persistNeeded {
 			rn.persist() // a term adopted in B must survive even on rejection
@@ -162,7 +162,7 @@ func (rn *RaftNode) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesR
 		return nil
 	}
 
-	// 2 — APPEND, resolving conflicts.
+	// APPEND, resolving conflicts.
 	for i := range args.Entries {
 		targetIndex := args.PrevLogIndex + 1 + i
 
@@ -180,7 +180,7 @@ func (rn *RaftNode) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesR
 		}
 	}
 
-	// 3 — ADVANCE COMMIT.
+	// ADVANCE COMMIT.
 	if args.LeaderCommit > rn.commitIndex {
 		lastIdx := rn.lastLogIndex()
 		if args.LeaderCommit < lastIdx {
@@ -206,7 +206,7 @@ func (rn *RaftNode) heartbeatLoop(termWhenElected int) {
 	for {
 		rn.mu.Lock()
 
-		// Stop this loop if we're no longer the rightful leader.
+		// Stop this loop if no longer the rightful leader.
 		if rn.state != Leader || rn.currentTerm != termWhenElected {
 			rn.mu.Unlock()
 			return
@@ -227,6 +227,6 @@ func (rn *RaftNode) heartbeatLoop(termWhenElected int) {
 			rn.sendAppendEntries(i, &args)
 		}
 
-		time.Sleep(50 * time.Millisecond) //heartbeat interval
+		time.Sleep(50 * time.Millisecond) // heartbeat interval
 	}
 }

@@ -7,7 +7,7 @@ import (
 )
 
 // persistentState is exactly the subset Raft requires to be durable. Nothing
-// else belongs here — commitIndex/lastApplied/nextIndex/matchIndex/kv are all
+// else belongs here: commitIndex/lastApplied/nextIndex/matchIndex/kv are all
 // volatile and rebuilt after a restart.
 type persistentState struct {
 	CurrentTerm int
@@ -20,11 +20,10 @@ func (rn *RaftNode) stateFile() string {
 }
 
 // persist writes durable state to disk. Call while holding rn.mu.
-//
 // It writes a temp file then renames it into place. os.Rename is atomic on the
-// OS (including Windows), so a crash mid-write can never leave a half-written,
+// OS, so a crash mid-write can never leave a half-written,
 // corrupt state file: you either keep the intact old file or get the complete
-// new one — never a torn one. That atomicity is the whole reason for the dance.
+// new one. That atomicity is the whole reason for the dance.
 func (rn *RaftNode) persist() {
 	ps := persistentState{
 		CurrentTerm: rn.currentTerm,

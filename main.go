@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	id := flag.Int("id", 0, "this node's 0-indexed ID")
-	peerList := flag.String(
+	id := flag.Int("id", 0, "this node's 0-indexed ID") // Defines an -id argument
+	peerList := flag.String( // Addresses of all nodes in the cluster
 		"peers",
 		"localhost:8000,localhost:8001,localhost:8002",
 		"comma-separated addresses of all nodes",

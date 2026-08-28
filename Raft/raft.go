@@ -65,7 +65,7 @@ type RaftNode struct {
 	nextIndex  []int // per follower: next log index to send
 	matchIndex []int // per follower: highest index known replicated there
 
-	kv map[string]string // the state machine
+	kv map[string]string 
 }
 
 func NewRaftNode(id int, peers []string) *RaftNode {
@@ -90,7 +90,7 @@ func (rn *RaftNode) resetElectionTimeout() {
 	rn.electionTimeout = time.Duration(400+rand.Intn(300)) * time.Millisecond
 }
 
-// lastLogIndex / lastLogTerm — call while holding rn.mu.
+// lastLogIndex / lastLogTerm, calls while holding rn.mu.
 func (rn *RaftNode) lastLogIndex() int {
 	return len(rn.log) - 1
 }
@@ -104,7 +104,7 @@ func (rn *RaftNode) logf(format string, args ...any) {
 	log.Printf(prefix+format, args...)
 }
 
-//applyCommitted aplies entries inputted between lastApplied and commitIndex
+// applyCommitted aplies entries inputted between lastApplied and commitIndex
 func (rn *RaftNode) applyCommitted() {
 	for rn.lastApplied < rn.commitIndex {
 		rn.lastApplied++
