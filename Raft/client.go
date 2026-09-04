@@ -12,10 +12,10 @@ func (rn *RaftNode) Submit(cmd Command) (int, bool) {
         return -1, false
     }
 
-	// TODO 2: Append the command to our log as a new entry stamped with our
+	// Appends client entry into leader's logs
     rn.log = append(rn.log, LogEntry{Term: rn.currentTerm, Command: cmd})
 
-	// TODO 3: Return the new entry's index and true.
+	// Return the new entry's index and true.
 	rn.persist()
     index := rn.lastLogIndex()
 	return index, true
