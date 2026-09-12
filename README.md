@@ -8,4 +8,5 @@ Similar to a political election,
 Ongaro, Diego, and John Ousterhout. _In Search of an Understandable Consensus Algorithm_ 19 July 2014.
 
 “Raft.” _Thesecretlivesofdata.Com_, 2026, https://thesecretlivesofdata.com/raft/. 
+
 “Raft Consensus Algorithm.” _Raft.Github.Io_, https://raft.github.io/.
