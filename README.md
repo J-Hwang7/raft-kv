@@ -28,14 +28,14 @@ The value 5 is stored within the key "x", as `/status` retrieves information abo
 # Project Architecture 
 ```
 raft-kv/
-main.go        flags all nodes, acts as an entry point, defines node ID
+main.go          flags all nodes, acts as an entry point, defines node ID
 Raft/
 client.go        submits requests
-election.go        heartbeat loop, elections, commit advance
-httpapi.go        HTTP API
-raft.go        logs, applies heartbeat loop, node state
-rpc.go        RequestVote & AppendEntries
-storage.go        fault tolerance 
+election.go      heartbeat loop, elections, commit advance
+httpapi.go       HTTP API
+raft.go          logs, applies heartbeat loop, node state
+rpc.go           RequestVote & AppendEntries
+storage.go       fault tolerance 
 ```
 
 # Diagram of raft-kv
