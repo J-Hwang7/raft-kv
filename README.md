@@ -28,6 +28,13 @@ curl "http://localhost:9000/status"
 ```
 The value 5 is stored within the key "x", as `/status` retrieves information about a node's term, role, commit index, and key-value history.
 
+## Leader Failure
+Create 3 nodes and run the following commands to write a value and kill the leader. The election process will automatically commence and serve logs over a new leader.
+```
+curl "http://localhost:9000/put?key=city&value=atlanta"
+# kill the leader's terminal (Ctrl+C)
+curl "http://localhost:9001/get?key=city"
+```
 
 # Diagram of raft-kv
 ```mermaid
