@@ -41,7 +41,7 @@ storage
 # Diagram of raft-kv
 ```mermaid
 flowchart TB
-    Client["Client"]
+    Client["Client (curl)"]
 
     subgraph Cluster["Raft Cluster"]
         API["HTTP API"]
@@ -61,7 +61,7 @@ flowchart TB
     State2["raft-state-2.JSON"]
     end
 
-    Client -->|"GET / PUT / DELETE"| API
+    Client -->|"GET / PUT / Status"| API
     API --> N0
     N0 -->|"Stores"|State0
     N1 -->|"Stores"|State1
