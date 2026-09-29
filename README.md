@@ -8,6 +8,7 @@ Created by Diego Ongaro and John Ousterhout, the [Raft Consensus Algorithm](http
 
 **Commiting**: 
 
+**Fault Tolerance**: 
 # Simulating Election
 **Requires Go 1.21+ to run.** In 3 individual terminals, run one of the commands.
 ```
@@ -28,7 +29,13 @@ The value 5 is stored within the key "x", as `/status` retrieves information abo
 ```
 raft-kv/
 main.go         flags all nodes, acts as an entry point, defines node id
-
+Raft/
+client
+election
+httpapi
+raft
+rpc
+storage
 ```
 
 # Diagram of raft-kv
@@ -36,22 +43,27 @@ main.go         flags all nodes, acts as an entry point, defines node id
 flowchart TB
     Client["Client"]
 
-    subgraph Cluster["Raft-KV Cluster"]
+    subgraph Cluster["Raft Cluster"]
         API["HTTP API"]
 
         subgraph Raft["Raft Consensus Layer"]
             Core["Raft Core"]
             Election["Election"]
-            RPC["RPC"]
+            RPC["RPC (Over TCP)"]
         end
 
-        Storage["Storage / Key-Value Store"]
+        Storage["Key-Value Store"]
     end
 
     subgraph Nodes["Raft Nodes"]
-        N0["Node 0<br/>raft-state-0"]
-        N1["Node 1<br/>raft-state-1"]
-        N2["Node 2<br/>raft-state-2"]
+        subgraph Leader["Leader"]
+            N0["Node 0"]
+        end
+        subgraph Follower["Followers"]
+            N1["Node 1"]
+            N2["Node 2"]
+        end
+
     end
 
     Client -->|"GET / PUT / DELETE"| API
@@ -61,9 +73,9 @@ flowchart TB
     Core --> RPC
     Core --> Storage
 
-    RPC <-->|"Raft Messages"| N0
-    RPC <-->|"Raft Messages"| N1
-    RPC <-->|"Raft Messages"| N2
+    RPC <-->|"heartbeat + logs"| N0
+    RPC <-->|"heartbeat + logs"| N1
+    RPC <-->|"heartbeat + logss"| N2
 
     N0 <-->|"Log Replication"| N1
     N1 <-->|"Log Replication"| N2
