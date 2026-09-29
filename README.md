@@ -2,13 +2,14 @@
 Created by Diego Ongaro and John Ousterhout, the [Raft Consensus Algorithm](https://web.stanford.edu/~ouster/cgi-bin/papers/raft-atc14) is a leader-based consensus algorithm that manages replicated logs across servers in a distributed system. In Go, I built a key-value store using the Raft consensus algorithm by creating three nodes that elect a leader, replicate client logs  over TCP, and keep serving when a node dies. All logs are written to disk, ensuring that restarts will not erase committed data.
 
 # How it works
-**Leader Election**: 
+**Leader Election** 
 
-**Log Replication**:
+**Log Replication**
 
-**Commiting**: 
+**Commiting** 
 
-**Fault Tolerance**: 
+**Fault Tolerance** 
+
 # Simulating Election
 **Requires Go 1.21+ to run.** In 3 individual terminals, run one of the commands.
 ```
@@ -25,18 +26,6 @@ curl "http://localhost:9000/status"
 ```
 The value 5 is stored within the key "x", as `/status` retrieves information about a node's term, role, commit index, and key-value history.
 
-# Project Architecture 
-```
-raft-kv/
-main.go          flags all nodes, acts as an entry point, defines node ID
-Raft/
-client.go        submits requests
-election.go      heartbeat loop, elections, commit advance
-httpapi.go       HTTP API
-raft.go          logs, applies heartbeat loop, node state
-rpc.go           RequestVote & AppendEntries
-storage.go       fault tolerance 
-```
 
 # Diagram of raft-kv
 ```mermaid
@@ -70,6 +59,21 @@ flowchart TB
     N0 <-->|"heartbeat + logs"| N1
     N0 <-->|"heartbeat + logs"| N2 
 
+```
+
+## What I learned
+
+# Project Architecture 
+```
+raft-kv/
+main.go          flags all nodes, acts as an entry point, defines node ID
+Raft/
+client.go        submits requests
+election.go      heartbeat loop, elections, commit advance
+httpapi.go       HTTP API
+raft.go          logs, applies heartbeat loop, node state
+rpc.go           RequestVote & AppendEntries
+storage.go       fault tolerance 
 ```
 
 # References
