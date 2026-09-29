@@ -46,25 +46,21 @@ flowchart TB
     subgraph Cluster["Raft Cluster"]
         API["HTTP API"]
 
-        subgraph Raft["Raft Consensus Layer"]
-            Core["Raft Core"]
-            Election["Election"]
-            RPC["RPC (Over TCP)"]
-        end
-
-        Storage["Key-Value Store"]
-    end
-
-    subgraph Nodes["Raft Nodes"]
-        subgraph Leader["Leader"]
+        subgraph Raft["Raft Nodes - RPC over TCP"]
+           subgraph Leader["Leader"]
             N0["Node 0"]
         end
+
         subgraph Follower["Followers"]
             N1["Node 1"]
             N2["Node 2"]
         end
 
-    end
+        end
+
+
+
+
 
     Client -->|"GET / PUT / DELETE"| API
     API --> Core
