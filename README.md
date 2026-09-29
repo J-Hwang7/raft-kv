@@ -56,18 +56,13 @@ flowchart TB
             N2["Node 2"]
         end
 
-        end
+    end
 
 
 
 
 
     Client -->|"GET / PUT / DELETE"| API
-    API --> Core
-
-    Core --> Election
-    Core --> RPC
-    Core --> Storage
 
     N0 <-->|"heartbeat + logs"| N1
     N0 <-->|"heartbeat + logs"| N2
