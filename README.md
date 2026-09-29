@@ -61,7 +61,7 @@ flowchart TB
     State2["raft-state-2.JSON"]
     end
 
-    Client -->|"GET / PUT / Status"| API
+    Client -->|"GET / PUT / STATUS"| API
     API --> N0
     N0 -->|"Stores"|State0
     N1 -->|"Stores"|State1
