@@ -73,13 +73,9 @@ flowchart TB
     Core --> RPC
     Core --> Storage
 
-    RPC <-->|"heartbeat + logs"| N0
-    RPC <-->|"heartbeat + logs"| N1
-    RPC <-->|"heartbeat + logss"| N2
+    N0 <-->|"heartbeat + logs"| N1
+    N0 <-->|"heartbeat + logs"| N2
 
-    N0 <-->|"Log Replication"| N1
-    N1 <-->|"Log Replication"| N2
-    N0 <-->|"Log Replication"| N2
 ```
 
 # References
