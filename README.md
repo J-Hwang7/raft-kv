@@ -56,11 +56,11 @@ flowchart TB
             end
         end
 
-    end
-
     State0["raft-state-0.JSON]
     State1["raft-state-1.JSON]
     State2["raft-state-2.JSON]
+
+    end
 
 
 
