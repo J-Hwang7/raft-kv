@@ -63,6 +63,9 @@ flowchart TB
 
     Client -->|"GET / PUT / DELETE"| API
     API --> N0
+    N0 -->|"Stores"|State0
+    N1 -->|"Stores"|State1
+    N2 -->|"Stores"|State2
 
     N0 <-->|"heartbeat + logs"| N1
     N0 <-->|"heartbeat + logs"| N2 
