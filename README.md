@@ -48,12 +48,12 @@ flowchart TB
 
         subgraph Raft["Raft Nodes - RPC over TCP"]
            subgraph Leader["Leader"]
-            N0["Node 0"]
-        end
-
-        subgraph Follower["Followers"]
-            N1["Node 1"]
-            N2["Node 2"]
+                N0["Node 0"]
+            end
+            subgraph Follower["Followers"]
+                N1["Node 1"]
+                N2["Node 2"]
+            end
         end
 
     end
