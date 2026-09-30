@@ -20,7 +20,7 @@ go run . -id 1 -http localhost:9001
 go run . -id 2 -http localhost:9002
 ```
 
-After a node wins the election, open a fourth terminal and run the following commands.
+After a node wins the election, open a fourth terminal and run the following commands to set a value.
 ```
 curl "http://localhost:9000/put?key=x&value=5"
 curl "http://localhost:9000/get?key=x"
@@ -32,11 +32,14 @@ The value 5 is stored within the key "x", as `/status` retrieves information abo
 Create 3 nodes and run the following commands to write a value and kill the leader. The election process will automatically commence and serve logs over a new leader.
 ```
 curl "http://localhost:9000/put?key=city&value=atlanta"
-# kill the leader's terminal (Ctrl+C)
+//In leader terminal, (Ctrl + C) to kill the leader
 curl "http://localhost:9001/get?key=city"
 ```
 
-# Diagram of raft-kv
+## Full-Cluster Restart
+Within each running node, use **Ctrl + C** to kill each node. Since the term, vote, and log have been written to a `raft-state-#.JSON` file, log replication resumes with the same state from before killing the node.
+
+## Diagram of raft-kv
 ```mermaid
 flowchart TB
     Client["Client (curl)"]
@@ -70,8 +73,6 @@ flowchart TB
 
 ```
 
-# What I learned
-
 # Project Architecture 
 ```
 raft-kv/
@@ -84,6 +85,8 @@ raft.go          logs, applies heartbeat loop, node state
 rpc.go           RequestVote & AppendEntries
 storage.go       fault tolerance 
 ```
+
+# What I learned
 
 # References
 Ongaro, Diego, and John Ousterhout. _In Search of an Understandable Consensus Algorithm_ 19 July 2014.
