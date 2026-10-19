@@ -11,7 +11,7 @@ Through randomized election timeouts, follower nodes can verify that the leader 
 The leader node appends client values to a replicated log and pushes them to follower nodes with `AppendEntries`, ensuring that the leader node and follower nodes have matching logs. By checking the `PrevLogTerm` and `PrevLogIndex`, conflicts are avoided in the logs.
 
 **Crash-safe Persistence** 
-`log`, `votedFor`, and `currentTerm`
+`log`, `votedFor`, and `currentTerm` are committed to the disk, as each node state is written into a raft-state-#.JSON`. This procedure occurs before any RPC. Since node states are preserved, they can be restarted and recovered without a loss of node data.
 
 # Simulating Election
 **Requires Go 1.21+ to run.** In 3 individual terminals, run one of the commands.
