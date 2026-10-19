@@ -33,7 +33,7 @@ curl "http://localhost:9000/status"
 The value 5 is stored within the key "x", as `/status` retrieves information about a node's term, role, commit index, and key-value history.
 
 ## Leader Failure
-Create 3 nodes and run the following commands to write a value and kill the leader. The election process will automatically commence and serve logs over a new leader.
+Create 3 nodes and run the following commands to write a client value and kill the leader node. The election process will automatically commence and serve logs over a new leader.
 ```
 curl "http://localhost:9000/put?key=city&value=atlanta"
 //In leader terminal, (Ctrl + C) to kill the leader
