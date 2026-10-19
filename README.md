@@ -5,12 +5,13 @@ Created by Diego Ongaro and John Ousterhout, the [Raft Consensus Algorithm](http
 
 # How it works
 **Leader Election** 
+Through randomized election timeouts, follower nodes can verify that the leader mode is functional, as the leader sends heartbeats to reset the election timeouts of the follower nodes. If a follower does not receive heartbeats within the election timeout, it becomes a candidate and initiates a new election. Based on a majority vote principle, the candidate with the most votes becomes a leader node. Each server tracks the term number.
 
 **Log Replication**
+The leader node appends client values to a replicated log and pushes them to follower nodes with `AppendEntries`, ensuring that the leader node and follower nodes have matching logs. By checking the `PrevLogTerm` and `PrevLogIndex`, conflicts are avoided in the logs.
 
-**Commiting** 
-
-**Fault Tolerance** 
+**Crash-safe Persistence** 
+`log`, `votedFor`, and `currentTerm`
 
 # Simulating Election
 **Requires Go 1.21+ to run.** In 3 individual terminals, run one of the commands.
@@ -85,8 +86,6 @@ raft.go          logs, applies heartbeat loop, node state
 rpc.go           RequestVote & AppendEntries
 storage.go       fault tolerance 
 ```
-
-# What I learned
 
 # References
 Ongaro, Diego, and John Ousterhout. _In Search of an Understandable Consensus Algorithm_ 19 July 2014.
