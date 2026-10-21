@@ -14,7 +14,7 @@ The leader node appends client values to a replicated log and pushes them to fol
 
 **Crash-safe Persistence** 
 
-`log`, `votedFor`, and `currentTerm` are committed to the disk, as each node state is written into a raft-state-#.JSON`. This procedure occurs before any RPC. Since node states are preserved, they can be restarted and recovered without a loss of node data.
+`log`, `votedFor`, and `currentTerm` are committed to the disk, as each node state is written into a raft-state-#.JSON file. This procedure occurs before any RPC. Since node states are preserved, they can be restarted and recovered without a loss of node data.
 
 # Simulating Election
 **Requires Go 1.21+ to run.** In 3 individual terminals, run one of the commands.
